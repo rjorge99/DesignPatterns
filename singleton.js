@@ -1,4 +1,7 @@
+// Singleton is a manifestation of a common JavaScript pattern: the Module pattern
+
 // Sample 1
+// Lazy Load
 const Singleton = (function () {
     let instance;
 
