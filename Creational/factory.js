@@ -1,3 +1,6 @@
+// A Factory Method creates new objects as instructed by the client.
+// There are situations however, where the client does not, or should not, know which one of several candidate objects to instantiate
+
 // Sample 1
 // A 'class' can be used, or an object as a Factory
 function Factory() {
