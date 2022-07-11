@@ -42,7 +42,7 @@ click.subscribe(clickHandler);
 click.fire('event #3');
 
 // Sample 2
-// Observable
+// Observable, treated as an interface
 class Subject {
     constructor() {
         this.observers = [];
@@ -57,26 +57,81 @@ class Subject {
     }
 
     notifyObservers(data) {
-        this.observers.forEach((item) => {
-            item.update(data);
+        this.observers.forEach((observer) => {
+            observer.update(data);
         });
     }
 }
 
+// Treated as an interface
 class Observer {
-    update(data) {
-        console.log(data);
+    update() {}
+}
+
+// State is the observable, when updated, will notyfy all observers
+class State extends Subject {
+    constructor() {
+        super();
+        this.state = {};
+    }
+
+    // Update the state.
+    // Calls the update method on each observer
+    update(data = {}) {
+        this.state = Object.assign(this.state, data);
+        this.notifyObservers(this.state);
+    }
+
+    getState() {
+        return this.state;
     }
 }
 
-const subject = new Subject();
+class List extends Observer {
+    createMarkup(state) {
+        return `<ul>${state.users.map((item) => `<li>${item}</li>`).join('\n')}</ul>`;
+    }
 
-const observer1 = new Observer();
-const observer2 = new Observer();
-const observer3 = new Observer();
+    render(state, selector = 'app') {
+        const markup = this.createMarkup(state);
+        const parent = document.querySelector(selector);
 
-subject.addObserver(observer1);
-subject.addObserver(observer2);
-subject.addObserver(observer3);
+        parent.innerHTML = markup;
+    }
 
-subject.notifyObservers('notified');
+    update(state) {
+        this.render(state, 'user-list-container');
+    }
+}
+
+class Count extends Observer {
+    createMarkup(state) {
+        return `<span>user count: ${state.users.length}</span>`;
+    }
+
+    render(state, selector = 'app') {
+        const markup = this.createMarkup(state);
+        const parent = document.getElementById(selector);
+
+        parent.innerHTML = markup;
+    }
+
+    update(state) {
+        this.render(state, 'user-count-container');
+    }
+}
+
+const appState = new State(); // Observable
+const namesList = new List(); // Observer
+const userCount = new Count(); // Observer
+
+// Hydratate the state
+appState.update({ users: ['John', 'Jane', 'Bob'] });
+
+// Add the observers
+appState.addObserver(namesList);
+appState.addObserver(userCount);
+
+// On load, perform initial render
+namesList.render(appState.getState(), 'user-list-container');
+userCount.render(appState.getState(), 'user-count-container');
