@@ -29,3 +29,33 @@ class ProxyInternet {
 
 const internet = new ProxyInternet();
 internet.connectTo('www.google.com'); // Error
+
+// Sample 2
+class InternetAccess {
+    constructor(employeeName) {
+        this.employeeName = employeeName;
+    }
+
+    grantInterentAccess() {
+        console.log('Access granted');
+    }
+}
+
+class ProxyInternetAccess {
+    constructor(employeeName) {
+        this.employeeName = employeeName;
+        this.realInternetAccess = null;
+    }
+
+    grantInternetAccess() {
+        if (this.getRole() > 4) {
+            this.realInternetAccess = new InternetAccess(this.employeeName);
+            this.realInternetAccess.grantInterentAccess();
+        } else console.log('Access denied');
+    }
+
+    getRole() {
+        // validate employee role
+        return 9;
+    }
+}
