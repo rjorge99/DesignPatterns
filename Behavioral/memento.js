@@ -1,4 +1,6 @@
 // The Memento pattern provides temporary storage as well as restoration of an object.
+// the most common reason for using this pattern is to capture a snapshot of an object’s
+// state so that any subsequent changes can be undone easily if necessary.
 // Optional, employee.createMemento() could return directly the clone, and not a memento object
 
 class Memento {
