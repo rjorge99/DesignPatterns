@@ -95,3 +95,25 @@ function login(user, password) {
 }
 
 login();
+
+// Sample 3
+const AUTH_METHODS = {
+    GOOGLE: 'google',
+    FACEBOOK: 'facebook',
+    TWITTER: 'twitter'
+};
+
+// Strategies
+const googleAuth = () => console.log('google auth');
+const facebookAuth = () => console.log('facebook auth');
+const twitterAuth = () => console.log('twitter auth');
+
+const authStrategy = (method) =>
+    ({
+        [AUTH_METHODS.GOOGLE]: googleAuth,
+        [AUTH_METHODS.FACEBOOK]: facebookAuth,
+        [AUTH_METHODS.TWITTER]: twitterAuth
+    }[method]);
+
+const strategy = authStrategy(AUTH_METHODS.TWITTER);
+strategy();
