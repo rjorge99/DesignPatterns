@@ -20,7 +20,7 @@ class Click {
     }
 
     fire(o, thisObj) {
-        let scope = thisObj || window;
+        let scope = thisObj || null;
         this.handlers.forEach((item) => {
             item.call(scope, o);
         });
