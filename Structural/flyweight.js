@@ -47,7 +47,7 @@ const playList = new PlayList('My Playlist');
 playList.addPlayItem('Song 1');
 playList.addPlayItem('Song 2');
 playList.addPlayItem('Song 3');
-playList.addPlayItem('Song 2'); // <-- Donst create a new object
+playList.addPlayItem('Song 2'); // <-- Dont create a new object
 
 // In our example code we are building computers
 // Many models, makes, and processor combinations are common, so these characteristics are factored out and shared by Flyweight objects.
@@ -125,3 +125,56 @@ computers.add('HP', 'Envy', 'Intel', '2G', 'TXU003283');
 
 console.log(`Computers in collection: ${computers.getCount()}`); // 7
 console.log(`Flyweights in factory: ${FlyWeightFactory.getCount()}`); // 2
+
+// Sample 3
+class FlyweightBook {
+    constructor(title, author, isbn) {
+        this.title = title;
+        this.author = author;
+        this.isbn = isbn;
+    }
+}
+
+class FlyweightBookFactory {
+    static books = {};
+
+    static get(title, author, isbn) {
+        if (this.books[isbn]) return this.books[isbn];
+
+        return (this.books[isbn] = new FlyweightBook(title, author, isbn));
+    }
+
+    static getCount() {
+        let count = 0;
+        for (let key in this.books) count++;
+        return count;
+    }
+}
+
+class BooksList {
+    constructor() {
+        this.books = [];
+    }
+
+    add(title, author, isbn, sales, availability) {
+        this.books.push(FlyweightBookFactory.get(title, author, isbn));
+
+        // No common props
+        this.sales = sales;
+        this.availability = availability;
+    }
+
+    getBookCount() {
+        return this.books.length;
+    }
+}
+
+const books = new BooksList();
+books.add('The Lord of the Rings', 'J.R.R. Tolkien', '0-395-19395-8', 5, true);
+books.add('The Hobbit', 'J.R.R. Tolkien', '0-395-19395-1', 3, true);
+books.add('Harry Potter', 'J.K. Rowling', '0-395-19395-3', 2, false);
+books.add('Harry Potter', 'J.K. Rowling', '0-395-19395-3', 2, false);
+books.add('Harry Potter', 'J.K. Rowling', '0-395-19395-3', 2, false);
+
+console.log(`Books in list: ${books.getBookCount()}`); // 5
+console.log(`Flyweights in factory: ${FlyweightBookFactory.getCount()}`); // 3
