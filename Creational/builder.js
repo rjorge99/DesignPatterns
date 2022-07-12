@@ -50,7 +50,7 @@ function Car() {
     };
 }
 
-function Trukk() {
+function Truck() {
     this.doors = 0;
 
     this.addParts = function () {
@@ -99,3 +99,72 @@ class FrogBuilder {
 }
 
 const sally = new FrogBuilder('Sally', 'Female').setWeight(5).setHeight(7.8).build();
+
+// Sample 3
+class Car {
+    #color = null;
+    #spoiler = null;
+    #fuelType = null;
+    #productionDate = null;
+
+    constructor(color, spoiler, fuelType, productionDate) {
+        this.#color = color;
+        this.#spoiler = spoiler;
+        this.#fuelType = fuelType;
+        this.#productionDate = productionDate;
+    }
+
+    static Builder = class {
+        #color = null;
+        #spoiler = null;
+        #fuelType = null;
+        #productionDate = null;
+
+        withPetrolFuel() {
+            this.#fuelType = 'Petrol';
+            return this;
+        }
+
+        withDieselFuel() {
+            this.#fuelType = 'Diesel';
+            return this;
+        }
+
+        setColor(color) {
+            this.#color = color;
+            return this;
+        }
+
+        setSpoiler(spoiler) {
+            this.#spoiler = spoiler;
+            return this;
+        }
+
+        setFuelType(fuelType) {
+            this.#fuelType = fuelType;
+            return this;
+        }
+
+        setProductionDate(productionDate) {
+            this.#productionDate = productionDate;
+            return this;
+        }
+
+        build() {
+            return new Car(this.#color, this.#spoiler, this.#fuelType, this.#productionDate);
+        }
+    };
+
+    static RaceCarBuilder = class {
+        // ...
+    };
+}
+
+const personalCar = Car.Builder.setColor('red')
+    .setSpoiler(true)
+    .withPetrolFuel()
+    // .setFuelType('diesel')
+    .setProductionDate('2020-01-01')
+    .build();
+
+//const raceCar = Car.RaceCarBuilder.setColor('red');
