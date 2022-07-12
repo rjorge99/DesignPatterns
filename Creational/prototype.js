@@ -7,13 +7,16 @@
 // Sample 1
 let myCar = {
     name: 'Ford',
-    drive: function () {},
+    drive: function () {
+        console.log('drive');
+    },
     panic: function () {}
 };
 
-let yourCar = Object.create(myCar);
+let yourCar = Object.create(myCar); // Creates a new car, with prototype pointing to myCar
 // Now we can see that one is a prototype of the other
 console.log(yourCar.name); // Ford
+yourCar.drive(); // drive
 
 // Sample 2
 // If we wish to implement the Prototype pattern without directly using Object.create,
@@ -39,3 +42,23 @@ function vehicle(model) {
 
 let car = vehicle('Ford');
 car.getModel(); // Ford
+
+// Sample 3
+function Warrior(name) {
+    this.name = name;
+    this.hp = 100;
+}
+
+Warrior.prototype = {
+    bash: function (target) {
+        target.hp -= 10;
+    },
+    omniSlash: function (target) {
+        target.hp -= 20;
+    }
+};
+
+const sam = new Warrior('Sam');
+const leo = new Warrior('Leo');
+
+console.log(sam.bash === leo.bash); // true (Pointing to the same reference)
