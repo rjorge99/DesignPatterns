@@ -63,3 +63,39 @@ let carBuilder = new CarBuilder();
 let truckBuilder = new TruckBuilder();
 let car = shop.construct(carBuilder);
 let truck = shop.construct(truckBuilder);
+
+// Sample 2
+class Frog {
+    constructor(name, weight, height, gender) {
+        this.name = name;
+        this.weight = weight;
+        this.height = height;
+        this.gender = gender;
+    }
+}
+
+class FrogBuilder {
+    constructor(name, gender) {
+        this.name = name;
+        this.gender = gender;
+    }
+
+    setWeight(weight) {
+        this.weight = weight;
+        return this;
+    }
+
+    setHeight(height) {
+        this.height = height;
+        return this;
+    }
+
+    build() {
+        if (!('weight' in this)) throw new Error('Weight is not set');
+        if (!('height' in this)) throw new Error('Height is not set');
+
+        return new Frog(this.name, this.weight, this.height, this.gender);
+    }
+}
+
+const sally = new FrogBuilder('Sally', 'Female').setWeight(5).setHeight(7.8).build();
