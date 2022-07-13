@@ -4,6 +4,7 @@
 // Uses composition to implement the bridge pattern.
 
 // https://medium.com/@andreaspoyias/design-patterns-a-quick-guide-to-bridge-pattern-9ebf6a77baed
+// https://www.educative.io/collection/page/5429798910296064/5725579815944192/5545561252954112 <-- Great samples and exercises
 
 // Sample 1
 // Animal <-- Abstraction
