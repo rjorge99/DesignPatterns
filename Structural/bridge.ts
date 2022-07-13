@@ -69,3 +69,91 @@ const fish = new Fish(swim);
 
 person.move();
 fish.move();
+
+// Sample
+interface IApp {
+    display(): void;
+    displayMode(): void;
+    setLightMode(): void;
+    setDarkMode(): void;
+}
+
+class Facebook implements IApp {
+    private name: string;
+    private type: string;
+    private mode: string;
+
+    constructor(name: string, type: string) {
+        this.name = name;
+        this.type = type;
+    }
+
+    display(): void {
+        console.log(`Welcome to ${this.name} for ${this.type}`);
+    }
+
+    displayMode(): void {
+        console.log(`You are using Facebook in ${this.mode} mode`);
+    }
+
+    setLightMode(): void {
+        this.mode = 'Light';
+    }
+
+    setDarkMode(): void {
+        this.mode = 'Dark';
+    }
+}
+
+class WhatsApp implements IApp {
+    private name: string;
+    private type: string;
+    private mode: string;
+
+    constructor(name: string, type: string) {
+        this.name = name;
+        this.type = type;
+    }
+
+    display(): void {
+        console.log(`Welcome to ${this.name} for ${this.type}`);
+    }
+
+    displayMode(): void {
+        console.log(`You are using WhatsApp in ${this.mode} mode`);
+    }
+
+    setLightMode(): void {
+        this.mode = 'Light';
+    }
+
+    setDarkMode(): void {
+        this.mode = 'Dark';
+    }
+}
+
+class Mode {
+    private app: IApp;
+
+    constructor(app: IApp) {
+        this.app = app;
+    }
+
+    darkMode(): void {
+        this.app.setDarkMode();
+    }
+
+    lightMode(): void {
+        this.app.setLightMode();
+    }
+}
+
+const facebook = new Facebook('Facebook', 'Messenger');
+const mode = new Mode(facebook);
+mode.darkMode();
+facebook.displayMode();
+
+const whatsapp = new WhatsApp('WhatsApp', 'Messenger');
+const mode2 = new Mode(whatsapp);
+mode2.lightMode();
+whatsapp.displayMode();
