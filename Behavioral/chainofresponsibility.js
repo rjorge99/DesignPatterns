@@ -83,3 +83,79 @@ console.log(result);
 //   "width": "90px",
 //   "height": "50px",
 // }
+
+// Sample 2
+class CoffeeMachine {
+    constructor(handlers, ingredientsToBeAdded) {
+        const resultHandler = (coffee) => {
+            console.log(
+                `Result coffee: ${Object.keys(coffee)
+                    .filter((item) => item !== 'ingredientsToBeAdded')
+                    .join(', ')}`
+            );
+        };
+
+        this.handlers = [...Object.values(handlers), resultHandler].map(
+            (handler, index) => (coffee) => handler(coffee, this.handlers[index + 1])
+        );
+
+        this.coffeeCup = {
+            ingredientsToBeAdded
+        };
+    }
+
+    setNewIngredients(ingredientsToBeAdded) {
+        this.coffeeCup = { ingridientsToBeAdded };
+        console.log(
+            `Cup is replaced with a new ingredients: ${ingredientsToBeAdded.join(', ')}`
+        );
+
+        return this;
+    }
+
+    processCoffee() {
+        this.handlers[0](this.coffeeCup);
+    }
+}
+
+const coffeeHandlers = {
+    addCoffee: (coffee, next) => {
+        coffee.espresso = true;
+        console.log('Espresso is added');
+        next(coffee);
+    },
+    addMilk: (coffee, next) => {
+        if (coffee.ingredientsToBeAdded.includes('milk')) {
+            coffee.withMilk = true;
+            console.log('Milk is added');
+        }
+
+        next(coffee);
+    },
+    addSugar: (coffee, next) => {
+        if (coffee.ingredientsToBeAdded.includes('sugar')) {
+            coffee.withSugar = true;
+            console.log('Sugar is added');
+        }
+
+        next(coffee);
+    },
+    addCinnamon: (coffee, next) => {
+        if (coffee.ingredientsToBeAdded.includes('cinnamon')) {
+            coffee.withCinnamon = true;
+            console.log('Cinnamon is added');
+        }
+
+        next(coffee);
+    }
+};
+
+const coffeeMachine = new CoffeeMachine(coffeeHandlers, ['sugar', 'milk', 'cinnamon']);
+// Process coffee for an initial ingredients
+coffeeMachine.processCoffee();
+
+// Set new ingredients and process coffee with them (3)
+coffeeMachine.setNewIngredients(['sugar']).processCoffee();
+
+// Set another new ingredients and process coffee with them (4)
+coffeeMachine.setNewIngredients(['milk', 'cinnamon']).processCoffee();
