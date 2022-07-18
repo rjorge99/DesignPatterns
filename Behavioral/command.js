@@ -64,3 +64,36 @@ const manager = new OrderManager();
 manager.execute(new PlaceOrderCommand('Pad Thai', '1234'));
 manager.execute(new TrackOrderCommand('1234'));
 manager.execute(new CancelOrderCommand('1234'));
+
+// Sample 2
+class CopyFiles {
+    execute() {
+        const files = ['file1', 'file2', 'file3'];
+        const destination = '/my/files';
+        files.forEach((file) => OS.copyFile(file, destination));
+    }
+}
+
+class RenameFiles {
+    execute() {
+        const source_files = ['file1.txt', 'file2.txt'];
+        const new_files = ['file_1.txt', 'file_2.txt'];
+        source_files.forEach((fname, idx) => OS.renameFile(fname, new_files[idx]));
+    }
+}
+
+class JoinFiles {
+    execute() {
+        OS.joinFiles('file1.txt', 'file2.txt', '/my/joined/files');
+    }
+}
+
+function executer(cmd) {
+    console.log('There is some login here');
+    cmd.execute();
+    console.log('There is some login here');
+}
+
+executer(new CopyFiles());
+executer(new RenameFiles());
+executer(new JoinFiles());
