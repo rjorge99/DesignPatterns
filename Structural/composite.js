@@ -1,6 +1,11 @@
 // The Composite pattern allows the creation of objects with properties that are primitive items or a collection of objects
 // Each item in the collection can hold other collections themselves, creating deeply nested structures.
 // A tree control is a perfect example of a Composite pattern
+// A composite pattern deals with the complexity of how objects are related to one another
+// Use when you want to represent hierarchies of objects
+// The Composite Design Pattern is a structural design pattern with a recursive nature.
+
+// https://dev.to/coly010/the-composite-pattern-design-patterns-meet-the-frontend-445e
 
 // Sample 1
 
