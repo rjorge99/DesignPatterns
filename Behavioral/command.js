@@ -97,3 +97,74 @@ function executer(cmd) {
 executer(new CopyFiles());
 executer(new RenameFiles());
 executer(new JoinFiles());
+
+// Sample 3
+function add(x, y) {
+    return x + y;
+}
+function subtract(x, y) {
+    return x - y;
+}
+function multiply(x, y) {
+    return x * y;
+}
+function divide(x, y) {
+    return x / y;
+}
+
+function Command(execute, undo, value) {
+    this.execute = execute;
+    this.undo = undo;
+    this.value = value;
+}
+
+function AddCommand(value) {
+    return new Command(add, subtract, value);
+}
+function SubCommnad(value) {
+    return new Command(subtract, add, value);
+}
+function MulCommand(value) {
+    return new Command(multiply, divide, value);
+}
+function DivCommand(value) {
+    return new Command(divide, multiply, value);
+}
+
+function Calculator() {
+    let current = 0;
+    const commands = [];
+
+    function action(command) {
+        let name = command.execute
+            .toString()
+            .substring(9, command.execute.toString().length - 1);
+        return name.charAt(0).toUpperCase() + name.slice(1);
+    }
+
+    return {
+        execute: function (command) {
+            current = command.execute(current, command.value);
+            commands.push(command);
+            console.log(`${action(command)}: ${current}`);
+        },
+        undo: function () {
+            const command = commands.pop();
+            current = command.undo(current, command.value);
+            console.log(`Undo ${action(command)}: ${current}`);
+        },
+        getCurrentValue: function () {
+            return current;
+        }
+    };
+}
+
+const calculator = new Calculator();
+calculator.execute(new AddCommand(10));
+calculator.execute(new SubCommnad(5));
+calculator.execute(new MulCommand(2));
+calculator.execute(new DivCommand(4));
+
+calculator.undo();
+calculator.undo();
+console.log(calculator.getCurrentValue());
