@@ -1,5 +1,6 @@
 // The State pattern provides state-specific logic to a limited set of objects in which each object represents a particular state
 // The State Pattern ensures an object to behave in a predictable, coordinated way depending on the current "state" of the application.
+// It is a behavioural design pattern that allows an object to alter its behaviour based on changes to its internal state.
 
 // Sample 1
 var TrafficLight = function () {
