@@ -159,3 +159,28 @@ coffeeMachine.setNewIngredients(['sugar']).processCoffee();
 
 // Set another new ingredients and process coffee with them (4)
 coffeeMachine.setNewIngredients(['milk', 'cinnamon']).processCoffee();
+
+// Sample 3
+function Request(amount) {
+    this.amount = amount;
+    console.log(`Requested ${amount}`);
+}
+
+Request.prototype = {
+    get: function (bill) {
+        let count = Math.floor(this.amount / bill);
+        this.amount -= count * bill;
+        console.log(`Dispensed ${count} $ ${bill} bills`);
+        return this;
+    }
+};
+
+const request = new Request(378);
+request.get(100).get(50).get(20).get(10).get(5).get(1);
+// Requested: $378
+// Dispense 3 $100 bills
+// Dispense 1 $50 bills
+// Dispense 1 $20 bills
+// Dispense 0 $10 bills
+// Dispense 1 $5 bills
+// Dispense 3 $1 bills
