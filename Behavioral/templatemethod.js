@@ -2,6 +2,7 @@
 // Objects that implement these steps retain the original structure of the algorithm but have the option to redefine or adjust certain steps
 // in order to implement the pattern, just call an inexistent method on the parent's prototype
 // build method (that method will be the template) and simply implement that method on the sublcasses
+// is a pattern which can avoids duplicating code in your project, when an algorithm has both invariant and variant par
 
 // Sample 1
 var datastore = {
@@ -95,3 +96,67 @@ class GroundPokemon extends Pokemon {
         return Math.floor((this.attack + this.defense) * multipliers) + 1;
     }
 }
+
+// Sameple 3
+function Autocomplete() {
+    this.timeout = null;
+}
+
+Autocomplete.prototype.clearPreviousRequests = function () {
+    if (this.timeout) {
+        clearTimeout(this.timeout);
+    }
+};
+
+Autocomplete.prototype.search = function (searchTerm) {
+    var self = this;
+    var deferred = new $.Deferred();
+
+    this.clearPreviousRequests();
+
+    this.timeout = setTimeout(function () {
+        self.request(searchTerm).then(function (results) {
+            deferred.resolve(results);
+        });
+        self.timeout = null;
+    }, 300);
+
+    return deferred.promise();
+};
+
+// Subclass Autocomplete
+function ItunesAutocomplete() {
+    Autocomplete.apply(this, arguments);
+}
+
+ItunesAutocomplete.prototype = Object.create(Autocomplete.prototype);
+ItunesAutocomplete.prototype.constructor = ItunesAutocomplete;
+
+ItunesAutocomplete.prototype.request = function (searchTerm) {
+    var url =
+        'https://itunes.apple.com/search?' +
+        $.param({
+            term: searchTerm
+        });
+
+    url += '&callback=?';
+
+    return $.getJSON(url).then(function (response) {
+        return response.results;
+    });
+};
+
+// Subclass Autocomplete
+function FacebookAutocomplete() {
+    Autocomplete.apply(this, arguments);
+}
+
+FacebookAutocomplete.prototype = Object.create(Autocomplete.prototype);
+FacebookAutocomplete.prototype.constructor = FacebookAutocomplete;
+
+FacebookAutocomplete.prototype.request = function (searchTerm) {
+    var url = 'https://graph.facebook.com/' + searchTerm;
+    url += '?callback=?';
+
+    return $.getJSON(url);
+};
