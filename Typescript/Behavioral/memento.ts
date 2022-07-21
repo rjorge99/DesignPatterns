@@ -51,7 +51,7 @@ class EditorHistory {
 
 const editorHistory = new EditorHistory();
 const editor = new Editor();
-editor.setContent('Hello ');
+editor.setContent('Hello');
 editorHistory.push(editor.createState());
 
 editor.setContent('World');
@@ -62,3 +62,6 @@ console.log(editor.getContent()); // More Text
 
 editor.restoreState(editorHistory.pop());
 console.log(editor.getContent()); // World
+
+editor.restoreState(editorHistory.pop());
+console.log(editor.getContent()); // Hello
