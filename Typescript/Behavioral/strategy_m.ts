@@ -1,3 +1,4 @@
+// The  difference with the State Pattern is that the strategy can have different states, and different implementations (strategies) for each state.
 interface ICompressor {
     compress(file: string): void;
 }
