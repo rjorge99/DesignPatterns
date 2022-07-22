@@ -63,7 +63,7 @@ while (iterator.hasNext()) {
 // ES6 Sample
 // -------------------------------------
 // Add use of interfaces
-class BrowseHistory {
+class BrowseHistory2 {
     urls: string[] = [];
 
     push(url: string) {
@@ -87,12 +87,12 @@ class BrowseHistory {
     }
 }
 
-const browseHistory = new BrowseHistory();
+const browseHistory2 = new BrowseHistory2();
 browseHistory.push('http://www.google.com');
 browseHistory.push('http://www.facebook.com');
 browseHistory.push('http://www.youtube.com');
 
-for (const val of browseHistory) console.log(val);
+for (const val of browseHistory2) console.log(val);
 // http:www.google.com
 // http:www.facebook.com
 // http:www.youtube.com
