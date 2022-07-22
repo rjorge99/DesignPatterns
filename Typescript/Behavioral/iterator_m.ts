@@ -50,3 +50,7 @@ while (iterator.hasNext()) {
     console.log(iterator.current());
     iterator.next();
 }
+
+// http:www.google.com
+// http:www.facebook.com
+// http:www.youtube.com
