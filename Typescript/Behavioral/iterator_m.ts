@@ -5,7 +5,11 @@ interface IIterator {
     next(): void;
 }
 
-class BrowseHistory {
+interface Agregate {
+    createIterator(): IIterator;
+}
+
+class BrowseHistory implements Agregate {
     urls: string[] = [];
 
     push(url: string) {
@@ -51,6 +55,44 @@ while (iterator.hasNext()) {
     iterator.next();
 }
 
+// http:www.google.com
+// http:www.facebook.com
+// http:www.youtube.com
+
+// -------------------------------------
+// ES6 Sample
+// -------------------------------------
+// Add use of interfaces
+class BrowseHistory {
+    urls: string[] = [];
+
+    push(url: string) {
+        this.urls.push(url);
+    }
+
+    pop() {
+        this.urls.pop();
+    }
+
+    [Symbol.iterator]() {
+        let index = 0;
+        let self = this;
+
+        return {
+            next: function () {
+                let value = self.urls[index++];
+                return { value, done: !value };
+            }
+        };
+    }
+}
+
+const browseHistory = new BrowseHistory();
+browseHistory.push('http://www.google.com');
+browseHistory.push('http://www.facebook.com');
+browseHistory.push('http://www.youtube.com');
+
+for (const val of browseHistory) console.log(val);
 // http:www.google.com
 // http:www.facebook.com
 // http:www.youtube.com
