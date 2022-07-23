@@ -1,21 +1,27 @@
-class UIControl {
-    protected owner: DialogBox;
+// Functional interface (single method)
+interface IObserver {
+    update(): void;
+}
 
-    constructor(owner: DialogBox) {
-        this.owner = owner;
+abstract class UIControl {
+    private observers: IObserver[] = [];
+
+    attach(observer: IObserver) {
+        observer.update();
+        this.observers.push(observer);
+    }
+
+    protected notifyObservers() {
+        for (const observer of this.observers) observer.update();
     }
 }
 
 class ListBox extends UIControl {
     private selection: string;
 
-    constructor(owner: DialogBox) {
-        super(owner);
-    }
-
     set setSelection(selection: string) {
         this.selection = selection;
-        this.owner.changed(this);
+        this.notifyObservers();
     }
 
     get getSelection(): string {
@@ -26,13 +32,9 @@ class ListBox extends UIControl {
 class TextBox extends UIControl {
     private text: string;
 
-    constructor(owner: DialogBox) {
-        super(owner);
-    }
-
     set setText(text: string) {
         this.text = text;
-        this.owner.changed(this);
+        this.notifyObservers();
     }
 
     get getText(): string {
@@ -43,13 +45,9 @@ class TextBox extends UIControl {
 class MyButton extends UIControl {
     private isEnabled: boolean;
 
-    constructor(owner: DialogBox) {
-        super(owner);
-    }
-
     set setIsEnabled(isEnabled: boolean) {
         this.isEnabled = isEnabled;
-        this.owner.changed(this);
+        this.notifyObservers();
     }
 
     get getIsEnabled(): boolean {
@@ -57,31 +55,20 @@ class MyButton extends UIControl {
     }
 }
 
-abstract class DialogBox {
-    public abstract changed(control: UIControl): void;
-}
+class ArticleDialogBox {
+    private listBox: ListBox = new ListBox();
+    private textBox: TextBox = new TextBox();
+    private button: MyButton = new MyButton();
 
-class ArticleDialogBox extends DialogBox {
-    private listBox: ListBox = new ListBox(this);
-    private textBox: TextBox = new TextBox(this);
-    private button: MyButton = new MyButton(this);
+    constructor() {
+        this.listBox.attach({ update: this.articleSelected.bind(this) });
+        this.textBox.attach({ update: this.titleChanged.bind(this) });
+    }
 
     public simulateInteraction(): void {
         this.listBox.setSelection = 'Article 1';
         console.log(`Article: ${this.textBox.getText}`);
         console.log(`Button is enabled: ${this.button.getIsEnabled}`);
-    }
-
-    public changed(control: UIControl): void {
-        switch (control) {
-            case this.listBox:
-                this.articleSelected();
-                break;
-            case this.textBox:
-                this.titleChanged();
-            default:
-                break;
-        }
     }
 
     private titleChanged(): void {
